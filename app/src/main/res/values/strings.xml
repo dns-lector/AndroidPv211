@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">AndroidPv211</string>
+
+    <string name="main_tv_title">Знайомство з Android</string>
+    <string name="main_btn_calc">Калькулятор</string>
+
+    <!-- region Calc -->
+    <string name="calc_btn_0">0</string>
+    <string name="calc_btn_1">1</string>
+    <string name="calc_btn_2">2</string>
+    <string name="calc_btn_3">3</string>
+    <string name="calc_btn_4">4</string>
+    <string name="calc_btn_5">5</string>
+    <string name="calc_btn_6">6</string>
+    <string name="calc_btn_7">7</string>
+    <string name="calc_btn_8">8</string>
+    <string name="calc_btn_9">9</string>
+    <string name="calc_btn_backspace">\u232B</string>
+    <string name="calc_btn_sqr">&#x1D465;\u00B2</string>
+    <string name="calc_btn_sqrt">\u221A&#x1D465;\u0305</string>
+    <!-- endregion  -->
+
+</resources>
