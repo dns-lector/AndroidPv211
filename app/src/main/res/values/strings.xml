@@ -3,6 +3,12 @@
 
     <string name="main_tv_title">Знайомство з Android</string>
     <string name="main_btn_calc">Калькулятор</string>
+    <string name="main_btn_rates">Курси валют</string>
+
+    <!-- region Rates -->
+    <string name="rates_tv_title">Курси валют від НБУ</string>
+    <!-- endregion  -->
+
 
     <!-- region Calc -->
     <string name="calc_btn_0">0</string>

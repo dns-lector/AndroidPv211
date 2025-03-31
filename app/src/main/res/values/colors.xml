@@ -6,6 +6,11 @@
     <color name="main_layout_bg">#D7C98F</color>
     <color name="main_title_fg">#1717BF</color>
 
+    <!-- region Rates-->
+    <color name="rates_layout_bg">#E7DCAD</color>
+    <color name="rates_text_fg">#091C81</color>
+    <!-- endregion  -->
+
     <!-- region Calc -->
     <color name="calc_layout_bg">#202020</color>
     <color name="calc_tv_expression">#9B9B9B</color>
