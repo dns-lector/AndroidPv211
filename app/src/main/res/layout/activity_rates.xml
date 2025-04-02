@@ -19,10 +19,9 @@
         android:textSize="20sp"
         android:textStyle="bold"/>
 
-    <TextView
-        android:id="@+id/rates_tv_container"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rates_rv_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
+        android:layout_height="match_parent"/>
 
 </LinearLayout>
