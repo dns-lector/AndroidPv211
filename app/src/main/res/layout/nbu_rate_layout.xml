@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="7dp"
     android:background="@drawable/calc_btn_func"
@@ -20,7 +20,9 @@
     <TextView
         android:id="@+id/nbu_rate_txt"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_height="0dp"
+        android:gravity="center_vertical"
         tools:text="Алжирський динар"/>
 
     <TextView

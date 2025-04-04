@@ -16,7 +16,9 @@
         tools:targetApi="31">
         <activity
             android:name=".RatesActivity"
-            android:exported="false" />
+            android:screenOrientation="portrait"
+            android:exported="false"
+            tools:ignore="DiscouragedApi,LockedOrientationActivity" />
         <activity
             android:name=".CalcActivity"
             android:exported="false" />
