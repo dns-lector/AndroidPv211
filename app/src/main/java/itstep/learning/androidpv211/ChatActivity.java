@@ -2,9 +2,11 @@ package itstep.learning.androidpv211;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -17,6 +19,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
@@ -30,6 +33,7 @@ public class ChatActivity extends AppCompatActivity {
     private ExecutorService pool;
     private final List<ChatMessage> messages = new ArrayList<>();
     private EditText etAuthor;
+    private EditText etMessage;
     private RecyclerView rvContent;
     private ChatMessageAdapter chatMessageAdapter;
 
@@ -48,16 +52,42 @@ public class ChatActivity extends AppCompatActivity {
         });
         pool = Executors.newFixedThreadPool( 3 );
         CompletableFuture
-                .supplyAsync( () -> Services.fetchUrl( chatUrl ) )
+                .supplyAsync( () -> Services.fetchUrl( chatUrl ), pool )
                 .thenApply( this::parseChatResponse )
                 .thenAccept( this::processChatResponse );
         etAuthor = findViewById( R.id.chat_et_author );
+        etMessage = findViewById( R.id.chat_et_message );
 
         rvContent = findViewById( R.id.chat_rv_content );
         chatMessageAdapter = new ChatMessageAdapter( messages );
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setStackFromEnd( true );
         rvContent.setLayoutManager( layoutManager );
         rvContent.setAdapter( chatMessageAdapter );
+
+        findViewById( R.id.chat_btn_send ).setOnClickListener( this::onSendClick );
+    }
+
+    private void onSendClick( View view ) {
+        String alertMessage = null;
+        String author = etAuthor.getText().toString() ;
+        String message = etMessage.getText().toString() ;
+        if( author.isBlank() ) {
+            alertMessage = "Введіть ваш нік";
+        }
+        else if( message.isBlank() ) {
+            alertMessage = "Введіть повідомлення";
+        }
+        if( alertMessage != null ) {
+            new AlertDialog.Builder(this, android.R.style.ThemeOverlay_Material_Dialog_Alert)
+                    .setTitle( "Надсилання зупинене" )
+                    .setMessage( alertMessage )
+                    .setIcon( android.R.drawable.ic_delete )
+                    .setPositiveButton( "Зрозуміло", (dlg, btn) -> {} )
+                    .setCancelable( false )
+                    .show();
+            return;
+        }
     }
 
     private void processChatResponse( List<ChatMessage> parsedMessages ) {
@@ -67,6 +97,7 @@ public class ChatActivity extends AppCompatActivity {
                 messages.add( m );
             }
         }
+        messages.sort( Comparator.comparing( ChatMessage::getMoment ) );
         runOnUiThread( () -> chatMessageAdapter.notifyItemRangeChanged( oldSize, messages.size() ) );
     }
 
@@ -95,10 +126,9 @@ public class ChatActivity extends AppCompatActivity {
 
 }
 /*
-Д.З. При прийомі відповіді сервера повідомлень (у методі
-parseChatResponse) забезпечити перевірку статусу відповіді
-(поля root.status). Його значення має бути 1 (числова
-одиниця). Якщо значення інше, то слід вивести лог з
-відповідним зауваженням, що запит завершився з статусом Х
-та ігнорувати подальшу обробку тіла відповіді.
+Д.З. Реалізувати виведення "розумного" часу повідомлень чату
+- якщо дата повідомлення "сьогодні", то виводити тільки час
+- якщо "вчора", то саме слово "вчора" та час
+- якщо у межах тижня, то "2 дні тому", "3 дні тому"
+- інакше - повну дату і час
  */

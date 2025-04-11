@@ -25,7 +25,9 @@ public class ChatMessage {
         try {
             chatMessage.setMoment(
                     dateFormat.parse(
-                            jsonObject.getString( "moment" ) ) );
+                           // jsonObject.getString( "moment" )
+                            "2025-04-11 19:00:00"
+                    ) );
         }
         catch( ParseException ex ) {
             throw new JSONException( ex.getMessage() );
