@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,14 +22,16 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import itstep.learning.androidpv211.chat.ChatMessageAdapter;
 import itstep.learning.androidpv211.orm.ChatMessage;
-import itstep.learning.androidpv211.orm.NbuRate;
 
 public class ChatActivity extends AppCompatActivity {
     private static final String chatUrl = "https://chat.momentfor.fun/";
     private ExecutorService pool;
     private final List<ChatMessage> messages = new ArrayList<>();
     private EditText etAuthor;
+    private RecyclerView rvContent;
+    private ChatMessageAdapter chatMessageAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,16 +52,22 @@ public class ChatActivity extends AppCompatActivity {
                 .thenApply( this::parseChatResponse )
                 .thenAccept( this::processChatResponse );
         etAuthor = findViewById( R.id.chat_et_author );
+
+        rvContent = findViewById( R.id.chat_rv_content );
+        chatMessageAdapter = new ChatMessageAdapter( messages );
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        rvContent.setLayoutManager( layoutManager );
+        rvContent.setAdapter( chatMessageAdapter );
     }
 
     private void processChatResponse( List<ChatMessage> parsedMessages ) {
+        int oldSize = messages.size();
         for( ChatMessage m : parsedMessages ) {
             if( messages.stream().noneMatch( cm -> cm.getId().equals( m.getId() ) ) ) {
                 messages.add( m );
             }
         }
-        runOnUiThread( () ->
-            etAuthor.setText( messages.size() + "" ) );
+        runOnUiThread( () -> chatMessageAdapter.notifyItemRangeChanged( oldSize, messages.size() ) );
     }
 
     private List<ChatMessage> parseChatResponse( String body ) {
