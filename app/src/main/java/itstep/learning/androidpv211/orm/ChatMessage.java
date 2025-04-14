@@ -17,7 +17,15 @@ public class ChatMessage {
     private String text;
     private Date moment;
 
-    public static ChatMessage fromJsonObject( JSONObject jsonObject ) throws JSONException {
+    public ChatMessage() { }
+
+    public ChatMessage(String author, String text) {
+        this.author = author;
+        this.text = text;
+        moment = new Date();
+    }
+
+    public static ChatMessage fromJsonObject(JSONObject jsonObject ) throws JSONException {
         ChatMessage chatMessage = new ChatMessage();
         chatMessage.setId( jsonObject.getString( "id" ) );
         chatMessage.setAuthor( jsonObject.getString( "author" ) );
@@ -25,8 +33,8 @@ public class ChatMessage {
         try {
             chatMessage.setMoment(
                     dateFormat.parse(
-                           // jsonObject.getString( "moment" )
-                            "2025-04-11 19:00:00"
+                           jsonObject.getString( "moment" )
+                           // "2025-04-11 19:00:00"
                     ) );
         }
         catch( ParseException ex ) {

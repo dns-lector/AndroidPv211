@@ -11,18 +11,25 @@ import java.nio.charset.StandardCharsets;
 
 public class Services {
 
+    // Читає потік (Stream) до кінця і перетворює зчитані дані у рядок (String)
+    public static String readAllText( InputStream inputStream ) throws IOException {
+        ByteArrayOutputStream byteBuilder = new ByteArrayOutputStream();
+        byte[] buffer = new byte[8192];
+        int len;
+        while( ( len = inputStream.read( buffer ) ) > 0 ) {
+            byteBuilder.write( buffer, 0, len );
+        }
+        String charsetName = StandardCharsets.UTF_8.name();
+        String data = byteBuilder.toString( charsetName );
+        byteBuilder.close();
+        return data;
+    }
+
     public static String fetchUrl( String href ) {
         try {
             URL url = new URL( href );
             InputStream urlStream = url.openStream();   // GET-request
-            ByteArrayOutputStream byteBuilder = new ByteArrayOutputStream();
-            byte[] buffer = new byte[8192];
-            int len;
-            while( ( len = urlStream.read( buffer ) ) > 0 ) {
-                byteBuilder.write( buffer, 0, len );
-            }
-            String charsetName = StandardCharsets.UTF_8.name();
-            String data = byteBuilder.toString( charsetName );
+            String data = readAllText( urlStream );
             urlStream.close();
             return data;
         }
