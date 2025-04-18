@@ -1,5 +1,8 @@
 package itstep.learning.androidpv211.orm;
 
+import android.database.Cursor;
+import android.util.Log;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -11,6 +14,8 @@ import java.util.Locale;
 public class ChatMessage {
     public static final SimpleDateFormat dateFormat =
             new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ROOT );
+    public static final SimpleDateFormat sqliteFormat =   // Tue Apr 15 14:28:09 GMT 2025
+            new SimpleDateFormat("EEE MMM d HH:mm:ss z yyyy", Locale.ENGLISH );
 
     private String id;
     private String author;
@@ -23,6 +28,21 @@ public class ChatMessage {
         this.author = author;
         this.text = text;
         moment = new Date();
+    }
+
+    public static ChatMessage fromCursor( Cursor cursor ) {
+        ChatMessage chatMessage = new ChatMessage();
+        chatMessage.setId( cursor.getString( 0 ) );
+        chatMessage.setAuthor( cursor.getString( 1 ) );
+        chatMessage.setText( cursor.getString( 2 ) );
+        try {
+            chatMessage.setMoment( sqliteFormat.parse( cursor.getString(3) ) );
+        }
+        catch (Exception ex) {
+            chatMessage.setMoment( new Date() );
+            Log.e( "fromCursor", ex.getClass().getName() + " " + ex.getMessage() ) ;
+        }
+        return chatMessage;
     }
 
     public static ChatMessage fromJsonObject(JSONObject jsonObject ) throws JSONException {

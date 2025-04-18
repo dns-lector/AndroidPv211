@@ -10,6 +10,7 @@
     <string name="chat_tv_title">Теревеньки</string>
     <string name="chat_tv_author">Автор:</string>
     <string name="chat_author_hint">Ваш нік у чаті</string>
+    <string name="chat_author_remember">Зберегти</string>
     <string name="chat_send_hint">Надіслати повідомлення</string>
     <string name="chat_message_hint">Введіть повідомлення</string>
     <string name="chat_content_hint">Останні повідомлення</string>
